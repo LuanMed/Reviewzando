@@ -1,0 +1,110 @@
+import React, { useState } from "react";
+import useSignUp from "../../hooks/api/useSignUp";
+import { Button, ContainerForm, Form, Input, LinkTo } from "./style";
+import { Logo } from "../../components/Logo";
+
+export default function SignUp() {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [picture_url, setPicture_url] = useState("");
+  const [disable, setDisable] = useState(false);
+
+  const { signUpLoading, signUp } = useSignUp();
+
+  async function submit(event) {
+    event.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert("As senhas devem ser iguais!");
+    } else {
+      try {
+        await signUp(username, email, password, picture_url);
+        window.location.href = "/signin";
+      } catch (error) {
+        console.log(error.response.data);
+        if (
+          error.response.data.details[0] === '"picture_url" must be a valid uri'
+        ) {
+          alert("Link da imagem inválido!");
+        } else {
+          alert("nao foi");
+        }
+      }
+    }
+  }
+
+  return (
+    <>
+      <Logo />
+      <ContainerForm>
+        <Form onSubmit={submit}>
+          <Input
+            data-test="email"
+            disabled={disable}
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            type="email"
+            placeholder="e-mail"
+            name="email"
+            autoComplete="off"
+            required
+          />
+          <Input
+            data-test="password"
+            disabled={disable}
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            type="password"
+            placeholder="senha"
+            name="password"
+            autoComplete="off"
+            required
+          />
+          <Input
+            data-test="confirmPassword"
+            disabled={disable}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={confirmPassword}
+            type="password"
+            placeholder="confirme a senha"
+            name="password"
+            autoComplete="off"
+            required
+          />
+          <Input
+            data-test="username"
+            disabled={disable}
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
+            type="text"
+            placeholder="apelido"
+            name="username"
+            autoComplete="off"
+            required
+          />
+          <Input
+            data-test="picture-url"
+            disabled={disable}
+            onChange={(e) => setPicture_url(e.target.value)}
+            value={picture_url}
+            type="text"
+            placeholder="foto de perfil"
+            name="image"
+            autoComplete="off"
+            required
+          />
+          <Button
+            data-test="sign-up-btn"
+            disabled={signUpLoading}
+            type="submit"
+          >
+            Cadastrar
+          </Button>
+        </Form>
+        <LinkTo to="/signin">Já possui uma conta? Conecte-se aqui!</LinkTo>
+      </ContainerForm>
+    </>
+  );
+}
