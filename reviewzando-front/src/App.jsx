@@ -5,6 +5,7 @@ import Cover from "./pages/Cover";
 import Home from "./pages/Home";
 import { UserProvider } from "./contexts/AuthContext";
 import useToken from "./hooks/useToken";
+import NewReview from "./pages/NewReview";
 
 export default function App() {
   return (
@@ -22,7 +23,15 @@ export default function App() {
                   <Home />
                 </ProtectedRouteGuard>
               }
-            ></Route>
+            />
+            <Route
+              path="/new-review"
+              element={
+                <ProtectedRouteGuard>
+                  <NewReview />
+                </ProtectedRouteGuard>
+              }
+            />
           </Routes>
         </UserProvider>
       </BrowserRouter>

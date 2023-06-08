@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useContext } from "react";
 import UserContext from "../contexts/AuthContext";
+import { AiOutlinePlus } from "react-icons/ai";
 
 export default function Menu() {
   const [showLogout, setShowLogout] = useState(false);
@@ -13,6 +14,9 @@ export default function Menu() {
 
   return (
     <ContainerLogout>
+      <AddButton onClick={() => navigate("/new-review")}>
+        <AiOutlinePlus />
+      </AddButton>
       <ContainerImage>
         <img
           onClick={() => {
@@ -56,6 +60,16 @@ const ContainerLogout = styled.div`
   }
 `;
 
+const AddButton = styled.button`
+  background-color: #444444;
+  border: 0px;
+  padding: 0;
+  cursor: pointer;
+  svg {
+    font-size: 30px;
+  }
+`;
+
 const ContainerImage = styled.div`
   display: flex;
   align-items: center;
@@ -63,7 +77,7 @@ const ContainerImage = styled.div`
   width: 120px;
   height: 72px;
   background-color: #444444;
-  z-index: 4;
+  z-index: 10;
 `;
 
 const LogOutBar = styled.div`
@@ -76,10 +90,10 @@ const LogOutBar = styled.div`
   right: 0;
   border-radius: 0 0 0 20px;
   background-color: #444444;
-  width: 120px;
+  width: 115px;
   height: 150px;
   padding-top: 10px;
-  z-index: 3;
+  z-index: 9;
   cursor: pointer;
   transition: top 1s ease-in-out;
   a {
@@ -88,7 +102,7 @@ const LogOutBar = styled.div`
     font-size: 17px;
     color: #ffffff;
     text-align: center;
-    z-index: -3;
+    z-index: 7;
     @media (max-width: 900px) {
       font-size: 15px;
     }

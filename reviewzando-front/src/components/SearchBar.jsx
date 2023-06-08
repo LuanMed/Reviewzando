@@ -43,7 +43,7 @@ export default function SearchBar() {
           debounceTimeout={300}
           id="test"
           type="text"
-          placeholder="Search for people"
+          placeholder="Procurar"
           value={search}
           onChange={searchUser}
           required
@@ -90,7 +90,7 @@ const ContainerSearchBar = styled.div`
     top: 120%;
     margin-top: 0;
     margin-left: -45vw;
-    z-index: 2;
+    z-index: 8;
   }
 `;
 

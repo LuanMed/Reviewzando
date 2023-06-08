@@ -27,4 +27,5 @@ const ContainerHeader = styled.div`
   height: 72px;
   padding: 0px 0px 0px 20px;
   background-color: #444444;
+  z-index: 10;
 `;
