@@ -17,6 +17,7 @@ model User {
   password    String    @db.VarChar(255)
   picture_url String    @db.Text()
   Session     Session[]
+  Review      Review[]
 
   @@map(name: "user")
 }
@@ -30,4 +31,19 @@ model Session {
   updatedAt DateTime @updatedAt
 
   @@map(name: "session")
+}
+
+model Review {
+  id           Int    @id @default(autoincrement())
+  userId       Int
+  User         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title        String @db.VarChar(255)
+  poster       String @db.Text()
+  description  String @db.Text()
+  plotScore    Float
+  flowScore    Float
+  outcomeScore Float
+  average      Float
+
+  @@map(name: "review")
 }

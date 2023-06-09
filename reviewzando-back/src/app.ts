@@ -1,7 +1,8 @@
 import { connectDb, disconnetDb, loadEnv } from '@/config';
 import express, { Express } from 'express';
 import cors from 'cors';
-import { sessionsRouter, usersRouter } from '@/routers';
+import { reviewRouter, sessionsRouter, usersRouter } from '@/routers';
+import { handleApplicationErrors } from './middlewares';
 
 loadEnv();
 
@@ -11,7 +12,9 @@ app
   .use(express.json())
   .get('/health', (_req, res) => res.send('OK!'))
   .use('/signup', usersRouter)
-  .use('/signin', sessionsRouter);
+  .use('/signin', sessionsRouter)
+  .use('/new-review', reviewRouter)
+  .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {
   connectDb();

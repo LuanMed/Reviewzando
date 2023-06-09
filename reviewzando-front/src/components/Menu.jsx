@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useContext } from "react";
 import UserContext from "../contexts/AuthContext";
 import { AiOutlinePlus } from "react-icons/ai";
+import getMoviesFromTmbdApi from "../services/tmdbApi";
 
 export default function Menu() {
   const [showLogout, setShowLogout] = useState(false);
@@ -14,7 +15,7 @@ export default function Menu() {
 
   return (
     <ContainerLogout>
-      <AddButton onClick={() => navigate("/new-review")}>
+      <AddButton onClick={() => getMoviesFromTmbdApi()}>
         <AiOutlinePlus />
       </AddButton>
       <ContainerImage>
