@@ -6,8 +6,14 @@ async function findUsers(): Promise<FindUser[]> {
   return users;
 }
 
+async function findUsersByName(name: string): Promise<FindUser[]> {
+  const users = searchRepository.findUsersByName(name);
+  return users;
+}
+
 const searchService = {
   findUsers,
+  findUsersByName,
 };
 
 export default searchService;

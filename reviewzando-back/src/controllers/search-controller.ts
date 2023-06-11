@@ -11,3 +11,14 @@ export async function findUsers(req: AuthenticatedRequest, res: Response, next: 
     next(e);
   }
 }
+
+export async function findUsersByName(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response> {
+  const { username } = req.params;
+
+  try {
+    const users = await searchService.findUsersByName(username);
+    return res.status(httpStatus.OK).send(users);
+  } catch (e) {
+    next(e);
+  }
+}

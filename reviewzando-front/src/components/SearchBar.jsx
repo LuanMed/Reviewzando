@@ -9,25 +9,22 @@ import { DebounceInput } from "react-debounce-input";
 import styled from "styled-components";
 import { AiOutlineSearch } from "react-icons/ai";
 import { RxDotFilled } from "react-icons/rx";
+import useGetUsersByName from "../hooks/api/useGetUsersByName";
 
 export default function SearchBar() {
   const [search, setSearch] = useState("");
   const [result, setResult] = useState(undefined);
+  const { getUsers } = useGetUsersByName();
   const navigate = useNavigate();
   // const [followers] = useContext(FollowersContext);
   // const [updateUserPage, setUpdateUserPage] = useContext(UpdateUserPage);
   // const { userData } = useContext(AuthContext);
 
-  function searchUser(event) {
+  async function searchUser(event) {
     const searchTerm = event.target.value;
     if (searchTerm.length < 3) return setResult(undefined);
-    const resultSearch = axios.get(
-      `${process.env.REACT_APP_API_URL}/users/${userData.id}/${searchTerm}`
-    );
-    resultSearch.then((res) => setResult(res.data));
-    resultSearch.catch((err) => {
-      console.log(err.response.data);
-    });
+    const resultSearch = await getUsers(searchTerm);
+    setResult(resultSearch);
   }
 
   //   function handleClick(id) {
@@ -52,15 +49,16 @@ export default function SearchBar() {
         />
         <AiOutlineSearch onClick={() => handleClick(result[0].id)} />
         {result?.length !== 0 ? (
-          result?.map((r) => (
-            <EachUser
-              key={r.id}
-              onClick={() => handleClick(r.id)}
-              data-test="user-search"
-            >
-              <img src={r.picture_url} />
-              <p>{r.username}</p>
-              {followers.map((f) => {
+          <ContainerUserList>
+            {result?.map((r) => (
+              <EachUser
+                key={r.id}
+                onClick={() => handleClick(r.id)}
+                data-test="user-search"
+              >
+                <img src={r.picture_url} />
+                <p>{r.username}</p>
+                {/* {followers.map((f) => {
                 if (f.followed_id === r.id)
                   return (
                     <div key={f.followed_id}>
@@ -68,9 +66,10 @@ export default function SearchBar() {
                       <span>following</span>
                     </div>
                   );
-              })}
-            </EachUser>
-          ))
+              })} */}
+              </EachUser>
+            ))}
+          </ContainerUserList>
         ) : (
           <></>
         )}
@@ -128,13 +127,20 @@ const ContainerInput = styled.div`
   }
 `;
 
+const ContainerUserList = styled.div`
+  background-color: #777777;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+`;
+
 const EachUser = styled.button`
   display: flex;
   align-items: center;
-  margin-left: 10px;
   margin-top: 5px;
+  margin-left: 5px;
   margin-bottom: 5px;
-  background-color: #e7e7e7;
+  background-color: #777777;
   border: none;
   cursor: pointer;
   img {
@@ -145,7 +151,7 @@ const EachUser = styled.button`
   }
   p {
     font-size: 19px;
-    color: #515151;
+    color: #ffffff;
   }
   svg {
     position: static;

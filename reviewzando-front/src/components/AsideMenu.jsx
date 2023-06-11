@@ -15,14 +15,14 @@ export default function AsideMenu() {
       <p>Sugestões:</p>
       {users?.length !== 0 ? (
         users?.map((u) => (
-          <Followed>
+          <Followed key={u.id}>
             <img src={u.picture_url} />
             <p>{u.username}</p>
             <span>follow</span>
           </Followed>
         ))
       ) : (
-        <span></span>
+        <h3>Ainda não temos sugestões</h3>
       )}
     </ContainerFriends>
   );
@@ -41,6 +41,10 @@ const ContainerFriends = styled.aside`
   z-index: 1;
   p {
     font-size: 15px;
+  }
+  h3 {
+    font-size: 15px;
+    margin-top: 10px;
   }
   @media (max-width: 900px) {
     display: none;

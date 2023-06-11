@@ -14,8 +14,29 @@ async function findUsers(): Promise<FindUser[]> {
   });
 }
 
+async function findUsersByName(name: string): Promise<FindUser[]> {
+  console.log(name);
+  return prisma.user.findMany({
+    select: {
+      id: true,
+      picture_url: true,
+      username: true,
+    },
+    where: {
+      username: {
+        startsWith: name,
+        mode: 'insensitive',
+      },
+    },
+    orderBy: {
+      username: 'asc',
+    },
+  });
+}
+
 const searchRepository = {
   findUsers,
+  findUsersByName,
 };
 
 export default searchRepository;
