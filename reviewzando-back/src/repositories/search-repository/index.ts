@@ -8,6 +8,9 @@ async function findUsers(): Promise<FindUser[]> {
       picture_url: true,
       username: true,
     },
+    orderBy: {
+      id: 'desc',
+    },
   });
 }
 

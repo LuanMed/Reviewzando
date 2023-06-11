@@ -1,7 +1,7 @@
 import { connectDb, disconnetDb, loadEnv } from '@/config';
 import express, { Express } from 'express';
 import cors from 'cors';
-import { reviewRouter, sessionsRouter, usersRouter } from '@/routers';
+import { reviewRouter, searchRouter, sessionsRouter, usersRouter } from '@/routers';
 import { handleApplicationErrors } from './middlewares';
 
 loadEnv();
@@ -14,6 +14,7 @@ app
   .use('/signup', usersRouter)
   .use('/signin', sessionsRouter)
   .use('/reviews', reviewRouter)
+  .use('/users', searchRouter)
   .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {

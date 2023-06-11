@@ -1,24 +1,29 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import useGetUsers from "../hooks/api/useGetUsers";
 
 export default function AsideMenu() {
+  const [users, setUsers] = useState([]);
+  const { getUsers } = useGetUsers();
+
+  useEffect(() => {
+    setUsers(getUsers);
+  }, [getUsers]);
+
   return (
     <ContainerFriends>
       <p>Sugestões:</p>
-      <Followed>
-        <img src="https://images2.alphacoders.com/495/495160.png" />
-        <p>michelle</p>
-        <span>follow</span>
-      </Followed>
-      <Followed>
-        <img src="https://images2.alphacoders.com/495/495160.png" />
-        <p>michelle</p>
-        <span>follow</span>
-      </Followed>
-      <Followed>
-        <img src="https://images2.alphacoders.com/495/495160.png" />
-        <p>michellenogueiraalves</p>
-        <span>follow</span>
-      </Followed>
+      {users?.length !== 0 ? (
+        users?.map((u) => (
+          <Followed>
+            <img src={u.picture_url} />
+            <p>{u.username}</p>
+            <span>follow</span>
+          </Followed>
+        ))
+      ) : (
+        <span></span>
+      )}
     </ContainerFriends>
   );
 }
