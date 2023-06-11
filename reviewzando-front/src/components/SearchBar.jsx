@@ -48,6 +48,7 @@ export default function SearchBar() {
           onChange={searchUser}
           required
           data-test="search"
+          autoComplete="off"
         />
         <AiOutlineSearch onClick={() => handleClick(result[0].id)} />
         {result?.length !== 0 ? (

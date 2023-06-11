@@ -1,4 +1,4 @@
-import { Review } from '@prisma/client';
+import { Review, User } from '@prisma/client';
 
 export type ApplicationError = {
   name: string;
@@ -8,3 +8,5 @@ export type ApplicationError = {
 export type ReviewWithoutAverage = Omit<Review, 'id' | 'average'>;
 
 export type ReviewBody = Omit<ReviewWithoutAverage, 'userId'>;
+
+export type FindUser = Pick<User, 'id' | 'picture_url' | 'username'>;

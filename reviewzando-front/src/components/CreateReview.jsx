@@ -4,6 +4,7 @@ import { useState } from "react";
 import { DebounceInput } from "react-debounce-input";
 import getMoviesFromTmdbApi from "../services/tmdbApi";
 import usePostReview from "../hooks/api/usePostReview";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateReview() {
   const [movieName, setMovieName] = useState("");
@@ -15,6 +16,7 @@ export default function CreateReview() {
   const [selectedMovie, setSelectedMovie] = useState(undefined);
   const [showList, setShowList] = useState(false);
   const { reviewAct } = usePostReview();
+  const navigate = useNavigate();
   const imagePath = "https://image.tmdb.org/t/p/w500";
 
   async function searchMovie(event) {
@@ -54,15 +56,10 @@ export default function CreateReview() {
         flowScore: Number(flowScore),
         outcomeScore: Number(outcomeScore),
       });
+      navigate("/home");
     } catch (error) {
       console.log(error.message);
     }
-    console.log(poster);
-    console.log(movieName);
-    console.log(plotScore);
-    console.log(flowScore);
-    console.log(outcomeScore);
-    console.log(description);
   }
 
   return (
@@ -84,6 +81,7 @@ export default function CreateReview() {
               onChange={searchMovie}
               required
               placeholder="Nome do filme"
+              autoComplete="off"
             />
             <ContainerMovieList className={showList ? "visible" : ""}>
               {result?.map((r) => (
@@ -148,6 +146,7 @@ export default function CreateReview() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Análise"
+            autoComplete="off"
             required
           />
           <ContainerButton>
@@ -266,7 +265,7 @@ const RatingInput = styled.input`
   inline-size: var(--w);
   position: relative;
   touch-action: manipulation;
-  -webkit-appearance: none;
+  appearance: none;
 
   &::-moz-range-track {
     background: linear-gradient(

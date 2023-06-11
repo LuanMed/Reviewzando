@@ -13,7 +13,7 @@ app
   .get('/health', (_req, res) => res.send('OK!'))
   .use('/signup', usersRouter)
   .use('/signin', sessionsRouter)
-  .use('/new-review', reviewRouter)
+  .use('/reviews', reviewRouter)
   .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {

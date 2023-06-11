@@ -15,7 +15,7 @@ export default function Menu() {
 
   return (
     <ContainerLogout>
-      <AddButton onClick={() => getMoviesFromTmbdApi()}>
+      <AddButton onClick={() => navigate("/new-review")}>
         <AiOutlinePlus />
       </AddButton>
       <ContainerImage>

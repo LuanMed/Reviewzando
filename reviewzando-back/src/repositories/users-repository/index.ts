@@ -1,7 +1,7 @@
 import { prisma } from '@/config';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 
-async function findByEmail(email: string) {
+async function findByEmail(email: string): Promise<User> {
   return prisma.user.findUnique({
     where: {
       email,
@@ -9,7 +9,7 @@ async function findByEmail(email: string) {
   });
 }
 
-async function findByUsername(username: string) {
+async function findByUsername(username: string): Promise<User> {
   return prisma.user.findUnique({
     where: {
       username,

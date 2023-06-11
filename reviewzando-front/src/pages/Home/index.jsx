@@ -1,11 +1,11 @@
 import { Header } from "../../components/Header";
-import Review from "../../components/Review";
+import Timeline from "../../components/Timeline";
 
 export default function Home() {
   return (
     <>
       <Header />
-      <Review />
+      <Timeline />
     </>
   );
 }
