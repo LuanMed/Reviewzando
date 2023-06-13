@@ -6,6 +6,11 @@ async function findUsers(): Promise<FindUser[]> {
   return users;
 }
 
+async function findUsersById(id: number): Promise<FindUser> {
+  const user = searchRepository.findUsersById(id);
+  return user;
+}
+
 async function findUsersByName(name: string): Promise<FindUser[]> {
   const users = searchRepository.findUsersByName(name);
   return users;
@@ -13,6 +18,7 @@ async function findUsersByName(name: string): Promise<FindUser[]> {
 
 const searchService = {
   findUsers,
+  findUsersById,
   findUsersByName,
 };
 

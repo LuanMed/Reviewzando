@@ -13,6 +13,16 @@ export async function getReviews(req: AuthenticatedRequest, res: Response, next:
   }
 }
 
+export async function getReviewsById(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response> {
+  const id = Number(req.params.id);
+  try {
+    const reviews = await reviewService.getReviewsById(id);
+    return res.status(httpStatus.OK).send(reviews);
+  } catch (e) {
+    next(e);
+  }
+}
+
 export async function createReview(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response> {
   const { userId } = req;
   const body: ReviewBody & { userId: number } = { ...req.body, userId };

@@ -17,6 +17,25 @@ async function getReviews(): Promise<Review[]> {
   });
 }
 
+async function getReviewsById(id: number): Promise<Review[]> {
+  return prisma.review.findMany({
+    include: {
+      User: {
+        select: {
+          username: true,
+          picture_url: true,
+        },
+      },
+    },
+    where: {
+      userId: id,
+    },
+    orderBy: {
+      id: 'desc',
+    },
+  });
+}
+
 async function createReview(data: Prisma.ReviewUncheckedCreateInput): Promise<Review> {
   return prisma.review.create({
     data,
@@ -25,6 +44,7 @@ async function createReview(data: Prisma.ReviewUncheckedCreateInput): Promise<Re
 
 const reviewRepository = {
   getReviews,
+  getReviewsById,
   createReview,
 };
 

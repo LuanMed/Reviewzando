@@ -27,10 +27,11 @@ export default function SearchBar() {
     setResult(resultSearch);
   }
 
-  //   function handleClick(id) {
-  //     navigate(`/user/${id}`);
-  //     setUpdateUserPage(!updateUserPage);
-  //   }
+  function handleClick(id) {
+    setSearch("");
+    navigate(`/user/${id}`);
+    // setUpdateUserPage(!updateUserPage);
+  }
 
   return (
     <ContainerSearchBar>
@@ -47,6 +48,7 @@ export default function SearchBar() {
           data-test="search"
           autoComplete="off"
         />
+
         <AiOutlineSearch onClick={() => handleClick(result[0].id)} />
         {result?.length !== 0 ? (
           <ContainerUserList>
@@ -94,7 +96,7 @@ const ContainerSearchBar = styled.div`
   }
 `;
 
-const ContainerInput = styled.div`
+const ContainerInput = styled.form`
   position: relative;
   display: flex;
   flex-direction: column;

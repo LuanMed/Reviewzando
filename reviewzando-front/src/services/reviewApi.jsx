@@ -9,6 +9,15 @@ export async function getReviews(token) {
   return response.data;
 }
 
+export async function getReviewsById(id, token) {
+  const response = await api.get(`/reviews/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+}
+
 export async function createReview(body, token) {
   const response = await api.post("/reviews", body, {
     headers: {

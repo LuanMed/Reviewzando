@@ -10,6 +10,13 @@ async function getReviews(): Promise<Review[]> {
   return reviews;
 }
 
+async function getReviewsById(id: number): Promise<Review[]> {
+  const reviews: Review[] = await reviewRepository.getReviewsById(id);
+  if (!reviews) throw notFoundError();
+
+  return reviews;
+}
+
 async function createReview(body: ReviewWithoutAverage): Promise<Review> {
   const { userId, title, poster, plotScore, flowScore, outcomeScore, description } = body;
   const average = (plotScore + flowScore + outcomeScore) / 3;
@@ -28,6 +35,7 @@ async function createReview(body: ReviewWithoutAverage): Promise<Review> {
 
 const reviewService = {
   getReviews,
+  getReviewsById,
   createReview,
 };
 

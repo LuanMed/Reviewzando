@@ -12,6 +12,17 @@ export async function findUsers(req: AuthenticatedRequest, res: Response, next: 
   }
 }
 
+export async function findUsersById(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response> {
+  const id = Number(req.params.id);
+
+  try {
+    const user = await searchService.findUsersById(id);
+    return res.status(httpStatus.OK).send(user);
+  } catch (e) {
+    next(e);
+  }
+}
+
 export async function findUsersByName(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response> {
   const { username } = req.params;
 

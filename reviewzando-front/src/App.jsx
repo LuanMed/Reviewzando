@@ -2,7 +2,8 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Cover from "./pages/Cover";
-import Home from "./pages/Home";
+import Timeline from "./pages/Timeline";
+import UserTimeLine from "./pages/UserTimeline";
 import { UserProvider } from "./contexts/AuthContext";
 import useToken from "./hooks/useToken";
 import NewReview from "./pages/NewReview";
@@ -20,7 +21,15 @@ export default function App() {
               path="/home"
               element={
                 <ProtectedRouteGuard>
-                  <Home />
+                  <Timeline />
+                </ProtectedRouteGuard>
+              }
+            />
+            <Route
+              path="/user/:id"
+              element={
+                <ProtectedRouteGuard>
+                  <UserTimeLine />
                 </ProtectedRouteGuard>
               }
             />

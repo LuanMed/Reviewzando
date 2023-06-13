@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import useGetUsers from "../hooks/api/useGetUsers";
+import { useNavigate } from "react-router-dom";
 
 export default function AsideMenu() {
   const [users, setUsers] = useState([]);
   const { getUsers } = useGetUsers();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setUsers(getUsers);
@@ -16,8 +18,10 @@ export default function AsideMenu() {
       {users?.length !== 0 ? (
         users?.map((u) => (
           <Followed key={u.id}>
-            <img src={u.picture_url} />
-            <p>{u.username}</p>
+            <div onClick={() => navigate(`/user/${u.id}`)}>
+              <img src={u.picture_url} />
+              <p>{u.username}</p>
+            </div>
             <span>follow</span>
           </Followed>
         ))
@@ -54,22 +58,29 @@ const ContainerFriends = styled.aside`
 const Followed = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-top: 10px;
-  img {
-    width: 35px;
-    height: 35px;
-    margin-right: 10px;
-    border-radius: 50px;
+  div {
+    display: flex;
+    align-items: center;
+    max-width: 70%;
+    cursor: pointer;
+    img {
+      width: 35px;
+      height: 35px;
+      margin-right: 10px;
+      border-radius: 50px;
+    }
+    p {
+      margin: 0px;
+      text-align: start;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
   }
-  p {
-    margin: 0px;
-    margin-right: 15%;
-    text-align: start;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 50%;
-  }
+
   span {
     color: #888888;
     cursor: pointer;

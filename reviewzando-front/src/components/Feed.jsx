@@ -3,10 +3,12 @@ import AsideMenu from "./AsideMenu";
 import { useEffect } from "react";
 import { useState } from "react";
 import useGetReview from "../hooks/api/useGetReviews";
+import { useNavigate } from "react-router-dom";
 
-export default function Timeline() {
+export default function Feed() {
   const [reviewsList, setReviewsList] = useState([]);
   const { getReview } = useGetReview();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setReviewsList(getReview);
@@ -23,9 +25,11 @@ export default function Timeline() {
                 <PosterAndScore>
                   <Poster src={r.poster} />
                   <aside>
-                    <p>{r.title}</p>
+                    <p>
+                      <span>{r.title}</span>
+                    </p>
                     <RatingLabel>
-                      <strong>Enredo:</strong>
+                      <p>Enredo:</p>
                       <RatingInput
                         plotScore={r.plotScore}
                         className="rating"
@@ -33,7 +37,7 @@ export default function Timeline() {
                       />
                     </RatingLabel>
                     <RatingLabel>
-                      <strong>Flow:</strong>
+                      <p>Flow:</p>
                       <RatingInput
                         plotScore={r.flowScore}
                         className="rating"
@@ -41,16 +45,16 @@ export default function Timeline() {
                       />
                     </RatingLabel>
                     <RatingLabel>
-                      <strong>Desfecho:</strong>
+                      <p>Desfecho:</p>
                       <RatingInput
                         plotScore={r.outcomeScore}
                         className="rating"
                         type="range"
                       />
                     </RatingLabel>
-                    <p>Média: {r.average.toFixed(2)}</p>
+                    <p>Nota: {r.average.toFixed(2)}</p>
                   </aside>
-                  <PostOwner>
+                  <PostOwner onClick={() => navigate(`/user/${r.userId}`)}>
                     <p>{r.User.username}</p>
                     <img src={r.User.picture_url} />
                   </PostOwner>
@@ -110,6 +114,9 @@ const PosterAndScore = styled.div`
     margin-left: 20px;
     width: 50%;
     height: 100%;
+    span {
+      font-weight: 700;
+    }
   }
   p,
   label {
@@ -143,6 +150,7 @@ const PostOwner = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 0;
+  cursor: pointer;
   p {
     margin: 0px;
     text-align: start;
@@ -165,6 +173,7 @@ const Desciption = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 18px;
 `;
 
 const RatingLabel = styled.label`
@@ -192,6 +201,7 @@ const RatingInput = styled.input`
   position: relative;
   touch-action: manipulation;
   appearance: none;
+  background-color: #444444;
 
   &::-moz-range-track {
     background: linear-gradient(
