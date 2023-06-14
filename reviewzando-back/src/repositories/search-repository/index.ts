@@ -1,7 +1,18 @@
 import { prisma } from '@/config';
 import { FindUser } from '@/protocols';
 
-async function findUsers(): Promise<FindUser[]> {
+async function findUsers(id: number): Promise<FindUser[]> {
+  const followedUserIds = await prisma.follow
+    .findMany({
+      where: {
+        followerId: id,
+      },
+      select: {
+        followingId: true,
+      },
+    })
+    .then((follows) => follows.map((follow) => follow.followingId));
+
   return prisma.user.findMany({
     select: {
       id: true,
@@ -10,6 +21,14 @@ async function findUsers(): Promise<FindUser[]> {
     },
     orderBy: {
       id: 'desc',
+    },
+    where: {
+      NOT: {
+        id: id,
+      },
+      id: {
+        notIn: followedUserIds,
+      },
     },
   });
 }

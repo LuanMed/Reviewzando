@@ -18,6 +18,8 @@ model User {
   picture_url String    @db.Text()
   Session     Session[]
   Review      Review[]
+  Follower    Follow[]  @relation("Follower")
+  Following   Follow[]  @relation("Following")
 
   @@map(name: "user")
 }
@@ -46,4 +48,14 @@ model Review {
   average      Float
 
   @@map(name: "review")
+}
+
+model Follow {
+  id          Int  @id @default(autoincrement())
+  follower    User @relation("Follower", fields: [followerId], references: [id])
+  followerId  Int
+  following   User @relation("Following", fields: [followingId], references: [id])
+  followingId Int
+
+  @@map(name: "follow")
 }

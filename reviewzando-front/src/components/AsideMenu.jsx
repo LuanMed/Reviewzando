@@ -1,30 +1,83 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import useGetUsers from "../hooks/api/useGetUsers";
 import { useNavigate } from "react-router-dom";
+import useGetFollowsById from "../hooks/api/useGetFollowsById";
+import usePostFollow from "../hooks/api/usePostFollow";
+import useDeleteFollow from "../hooks/api/useDeleteFollow";
 
 export default function AsideMenu() {
   const [users, setUsers] = useState([]);
+  const [followers, setFollowers] = useState([]);
+  const [disable, setDisable] = useState(false);
   const { getUsers } = useGetUsers();
+  const { followsById } = useGetFollowsById();
+  const { postFollows } = usePostFollow();
+  const { deleteFollows } = useDeleteFollow();
   const navigate = useNavigate();
 
   useEffect(() => {
+    setFollowers(followsById);
     setUsers(getUsers);
-  }, [getUsers]);
+  }, [getUsers, followsById]);
+
+  async function handleFollow(followingId) {
+    setDisable(true);
+    try {
+      await postFollows({ followingId });
+      setFollowers([...followers, { followingId }]);
+      setDisable(false);
+    } catch (error) {
+      setDisable(false);
+      console.log(error);
+    }
+  }
+
+  async function handleUnfollow(followingId) {
+    setDisable(true);
+    try {
+      await deleteFollows(followingId);
+      setFollowers(
+        followers.filter((follower) => follower.followingId !== followingId)
+      );
+      setDisable(false);
+    } catch (error) {
+      setDisable(false);
+      console.log(error);
+    }
+  }
 
   return (
     <ContainerFriends>
       <p>Sugestões:</p>
       {users?.length !== 0 ? (
-        users?.map((u) => (
-          <Followed key={u.id}>
-            <div onClick={() => navigate(`/user/${u.id}`)}>
-              <img src={u.picture_url} />
-              <p>{u.username}</p>
-            </div>
-            <span>follow</span>
-          </Followed>
-        ))
+        users?.map((u) => {
+          const isFollowing = followers?.some(
+            (follower) => follower.followingId === u.id
+          );
+
+          return isFollowing ? (
+            <Followed key={u.id}>
+              <div onClick={() => navigate(`/user/${u.id}`)}>
+                <img src={u.picture_url} />
+                <p>{u.username}</p>
+              </div>
+              <button disabled={disable} onClick={() => handleUnfollow(u.id)}>
+                deixar de seguir
+              </button>
+            </Followed>
+          ) : (
+            <Followed key={u.id}>
+              <div onClick={() => navigate(`/user/${u.id}`)}>
+                <img src={u.picture_url} />
+                <p>{u.username}</p>
+              </div>
+              <button disabled={disable} onClick={() => handleFollow(u.id)}>
+                seguir
+              </button>
+            </Followed>
+          );
+        })
       ) : (
         <h3>Ainda não temos sugestões</h3>
       )}
@@ -81,7 +134,9 @@ const Followed = styled.div`
     }
   }
 
-  span {
+  button {
+    background-color: #444444;
+    border: 0;
     color: #888888;
     cursor: pointer;
   }

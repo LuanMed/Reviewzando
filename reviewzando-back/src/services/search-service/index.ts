@@ -1,8 +1,8 @@
 import { FindUser } from '@/protocols';
 import searchRepository from '@/repositories/search-repository';
 
-async function findUsers(): Promise<FindUser[]> {
-  const users = searchRepository.findUsers();
+async function findUsers(id: number): Promise<FindUser[]> {
+  const users = searchRepository.findUsers(id);
   return users;
 }
 

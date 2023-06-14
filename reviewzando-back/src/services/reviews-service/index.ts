@@ -1,7 +1,7 @@
 import { notFoundError } from '@/errors';
 import { ReviewWithoutAverage } from '@/protocols';
 import reviewRepository from '@/repositories/reviews-repository';
-import { Prisma, Review } from '@prisma/client';
+import { Review } from '@prisma/client';
 
 async function getReviews(): Promise<Review[]> {
   const reviews: Review[] = await reviewRepository.getReviews();

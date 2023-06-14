@@ -1,4 +1,4 @@
-import { AuthenticatedRequest } from '@/middlewares/authentication-middleware';
+import { AuthenticatedRequest } from '@/middlewares';
 import { ReviewBody } from '@/protocols';
 import reviewService from '@/services/reviews-service';
 import { NextFunction, Response } from 'express';

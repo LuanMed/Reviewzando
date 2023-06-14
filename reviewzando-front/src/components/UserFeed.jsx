@@ -1,17 +1,19 @@
 import styled from "styled-components";
 import AsideMenu from "./AsideMenu";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 import useGetReviewById from "../hooks/api/useGetReviewsById";
 import { useParams } from "react-router-dom";
 import useGetUsersById from "../hooks/api/useGetUsersById";
+import UserContext from "../contexts/AuthContext";
 
 export default function UserFeed() {
   const { id } = useParams();
   const [reviewsList, setReviewsList] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
-  const { getReviewById, getReviewByIdAct } = useGetReviewById();
-  const { getUsersById, getUsersActById } = useGetUsersById();
+  const { getReviewByIdAct } = useGetReviewById();
+  const { getUsersActById } = useGetUsersById();
+  const { userData: user } = useContext(UserContext);
 
   useEffect(() => {
     async function fetchData() {
@@ -21,7 +23,7 @@ export default function UserFeed() {
       setReviewsList(resultSearch);
     }
     fetchData();
-  }, [getReviewById, getUsersById]);
+  }, [id]);
 
   return (
     <>
@@ -38,6 +40,11 @@ export default function UserFeed() {
               <UserInfo>
                 <img src={currentUser.picture_url} />
                 <h1>{currentUser.username}</h1>
+                {user.user.id == id ? (
+                  <></>
+                ) : (
+                  <FollowButton>seguir</FollowButton>
+                )}
               </UserInfo>
               {reviewsList?.length !== 0 ? (
                 reviewsList?.map((r) => (
@@ -122,6 +129,7 @@ const NoUser = styled.div`
 `;
 
 const UserInfo = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   margin-bottom: 20px;
@@ -134,6 +142,20 @@ const UserInfo = styled.div`
     font-size: 40px;
     font-weight: 700;
     margin-left: 15px;
+  }
+`;
+
+const FollowButton = styled.button`
+  background-color: #444444;
+  border: 0;
+  border-radius: 8px;
+  margin-top: 7px;
+  margin-left: 15px;
+  cursor: pointer;
+  @media (max-width: 900px) {
+    position: absolute;
+    right: 5%;
+    margin-left: 0px;
   }
 `;
 

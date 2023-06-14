@@ -4,8 +4,9 @@ import { NextFunction, Response } from 'express';
 import httpStatus from 'http-status';
 
 export async function findUsers(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response> {
+  const { userId } = req;
   try {
-    const users = await searchService.findUsers();
+    const users = await searchService.findUsers(userId);
     return res.status(httpStatus.OK).send(users);
   } catch (e) {
     next(e);

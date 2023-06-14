@@ -12,7 +12,6 @@ export default function Feed() {
 
   useEffect(() => {
     setReviewsList(getReview);
-    console.log(getReview);
   }, [getReview]);
 
   return (
