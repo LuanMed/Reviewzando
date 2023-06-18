@@ -3,8 +3,8 @@ import { ReviewWithoutAverage } from '@/protocols';
 import reviewRepository from '@/repositories/reviews-repository';
 import { Review } from '@prisma/client';
 
-async function getReviews(): Promise<Review[]> {
-  const reviews: Review[] = await reviewRepository.getReviews();
+async function getReviews(id: number): Promise<Review[]> {
+  const reviews: Review[] = await reviewRepository.getReviews(id);
   if (!reviews) throw notFoundError();
 
   return reviews;

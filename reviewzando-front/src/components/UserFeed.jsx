@@ -6,13 +6,21 @@ import useGetReviewById from "../hooks/api/useGetReviewsById";
 import { useParams } from "react-router-dom";
 import useGetUsersById from "../hooks/api/useGetUsersById";
 import UserContext from "../contexts/AuthContext";
+import useGetFollowsById from "../hooks/api/useGetFollowsById";
+import usePostFollow from "../hooks/api/usePostFollow";
+import useDeleteFollow from "../hooks/api/useDeleteFollow";
 
 export default function UserFeed() {
   const { id } = useParams();
   const [reviewsList, setReviewsList] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [disable, setDisable] = useState(false);
   const { getReviewByIdAct } = useGetReviewById();
   const { getUsersActById } = useGetUsersById();
+  const { followsById, getFollowsById } = useGetFollowsById();
+  const { postFollows } = usePostFollow();
+  const { deleteFollows } = useDeleteFollow();
   const { userData: user } = useContext(UserContext);
 
   useEffect(() => {
@@ -23,7 +31,37 @@ export default function UserFeed() {
       setReviewsList(resultSearch);
     }
     fetchData();
-  }, [id]);
+    followsById?.map((f) => {
+      if (f.followingId == id) setIsFollowing(true);
+    });
+    console.log(isFollowing);
+  }, [id, followsById]);
+
+  async function handleFollow() {
+    setDisable(true);
+    try {
+      await postFollows({ followingId: id });
+      setIsFollowing(true);
+      getFollowsById();
+      setDisable(false);
+    } catch (error) {
+      setDisable(false);
+      console.log(error);
+    }
+  }
+
+  async function handleUnfollow() {
+    setDisable(true);
+    try {
+      await deleteFollows(id);
+      setIsFollowing(false);
+      getFollowsById();
+      setDisable(false);
+    } catch (error) {
+      setDisable(false);
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -42,13 +80,19 @@ export default function UserFeed() {
                 <h1>{currentUser.username}</h1>
                 {user.user.id == id ? (
                   <></>
+                ) : isFollowing ? (
+                  <FollowButton disabled={disable} onClick={handleUnfollow}>
+                    remover
+                  </FollowButton>
                 ) : (
-                  <FollowButton>seguir</FollowButton>
+                  <FollowButton disabled={disable} onClick={handleFollow}>
+                    seguir
+                  </FollowButton>
                 )}
               </UserInfo>
               {reviewsList?.length !== 0 ? (
                 reviewsList?.map((r) => (
-                  <ContainerReview key={r.id}>
+                  <ContainerReview key={r.id} background="#444444">
                     <PosterAndScore>
                       <Poster src={r.poster} />
                       <aside>
@@ -79,7 +123,7 @@ export default function UserFeed() {
                             type="range"
                           />
                         </RatingLabel>
-                        <p>Nota: {r.average.toFixed(2)}</p>
+                        <p>Nota: {r.average.toFixed(2) * 2}</p>
                       </aside>
                       <PostOwner>
                         <p>{r.User.username}</p>
@@ -91,7 +135,9 @@ export default function UserFeed() {
                   </ContainerReview>
                 ))
               ) : (
-                <h2>Este usuário ainda não fez uma análise!</h2>
+                <ContainerReview background="">
+                  <h2>Este usuário ainda não fez uma análise!</h2>
+                </ContainerReview>
               )}
             </div>
             <AsideMenu />
@@ -139,9 +185,18 @@ const UserInfo = styled.div`
     border-radius: 50px;
   }
   h1 {
-    font-size: 40px;
+    font-size: 38px;
     font-weight: 700;
     margin-left: 15px;
+  }
+  @media (max-width: 900px) {
+    img {
+      width: 50px;
+      height: 50px;
+    }
+    h1 {
+      font-size: 25px;
+    }
   }
 `;
 
@@ -154,7 +209,7 @@ const FollowButton = styled.button`
   cursor: pointer;
   @media (max-width: 900px) {
     position: absolute;
-    right: 5%;
+    right: 0;
     margin-left: 0px;
   }
 `;
@@ -163,7 +218,7 @@ const ContainerReview = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #444444;
+  background-color: ${(props) => props.background};
   border-radius: 8px;
   width: 30vw;
   margin-bottom: 28px;
@@ -218,6 +273,7 @@ const PosterAndScore = styled.div`
 const Poster = styled.img`
   width: 155px;
   border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 1) 0 5px 10px;
 `;
 
 const PostOwner = styled.div`

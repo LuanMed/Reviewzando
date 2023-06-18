@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import useSignUp from "../../hooks/api/useSignUp";
 import { Button, ContainerForm, Form, Input, LinkTo } from "./style";
 import { Logo } from "../../components/Logo";
@@ -9,7 +9,7 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [picture_url, setPicture_url] = useState("");
-  const [disable, setDisable] = useState(false);
+  const [disable] = useState(false);
 
   const { signUpLoading, signUp } = useSignUp();
 
@@ -82,6 +82,7 @@ export default function SignUp() {
             placeholder="apelido"
             name="username"
             autoComplete="off"
+            maxLength={15}
             required
           />
           <Input
@@ -90,7 +91,7 @@ export default function SignUp() {
             onChange={(e) => setPicture_url(e.target.value)}
             value={picture_url}
             type="text"
-            placeholder="foto de perfil"
+            placeholder="foto de perfil (URL)"
             name="image"
             autoComplete="off"
             required

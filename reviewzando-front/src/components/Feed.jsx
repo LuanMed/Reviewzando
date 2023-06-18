@@ -20,7 +20,7 @@ export default function Feed() {
         <div>
           {reviewsList?.length !== 0 ? (
             reviewsList?.map((r) => (
-              <ContainerReview key={r.id}>
+              <ContainerReview key={r.id} background="#444444">
                 <PosterAndScore>
                   <Poster src={r.poster} />
                   <aside>
@@ -51,7 +51,7 @@ export default function Feed() {
                         type="range"
                       />
                     </RatingLabel>
-                    <p>Nota: {r.average.toFixed(2)}</p>
+                    <p>Nota: {r.average.toFixed(2) * 2}</p>
                   </aside>
                   <PostOwner onClick={() => navigate(`/user/${r.userId}`)}>
                     <p>{r.User.username}</p>
@@ -63,7 +63,12 @@ export default function Feed() {
               </ContainerReview>
             ))
           ) : (
-            <></>
+            <ContainerReview background="">
+              <h2>
+                Não há nenhuma review no momento. <br /> Crie uma ou siga novas
+                pessoas!
+              </h2>
+            </ContainerReview>
           )}
         </div>
         <AsideMenu />
@@ -75,6 +80,10 @@ export default function Feed() {
 const ContainerTimeline = styled.div`
   margin-top: 100px;
   display: flex;
+  h2 {
+    font-size: 25px;
+    text-align: center;
+  }
   @media (max-width: 900px) {
     margin-top: 150px;
   }
@@ -84,7 +93,7 @@ const ContainerReview = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #444444;
+  background-color: ${(props) => props.background};
   border-radius: 8px;
   width: 30vw;
   margin-bottom: 28px;
@@ -100,7 +109,7 @@ const PosterAndScore = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 85%;
+  width: 100%;
   height: 250px;
   margin-top: 10px;
   margin-bottom: 20px;
@@ -109,8 +118,9 @@ const PosterAndScore = styled.div`
     display: flex;
     flex-direction: column;
     align-items: start;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-left: 20px;
+    padding: 20px 0 20px 0;
     width: 50%;
     height: 100%;
     span {
@@ -139,6 +149,7 @@ const PosterAndScore = styled.div`
 const Poster = styled.img`
   width: 155px;
   border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 1) 0 5px 10px;
 `;
 
 const PostOwner = styled.div`

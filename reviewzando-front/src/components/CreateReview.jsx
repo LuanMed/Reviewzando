@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function CreateReview() {
   const [movieName, setMovieName] = useState("");
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState(undefined);
   const [plotScore, setPlotScore] = useState(2.5);
   const [flowScore, setFlowScore] = useState(2.5);
   const [outcomeScore, setOutcomeScore] = useState(2.5);
@@ -21,9 +21,11 @@ export default function CreateReview() {
 
   async function searchMovie(event) {
     const searchMovieName = event.target.value;
+    setShowList(true);
     if (searchMovieName.length < 3) {
+      setShowList(false);
       setSelectedMovie(undefined);
-      setResult([]);
+      setResult(undefined);
       return;
     }
     const moviesList = await getMoviesFromTmdbApi();
@@ -32,7 +34,6 @@ export default function CreateReview() {
       const searchChars = searchMovieName.toLowerCase();
       return title.includes(searchChars);
     });
-    setShowList(true);
     setResult(filteredMovies);
   }
 
@@ -84,11 +85,15 @@ export default function CreateReview() {
               autoComplete="off"
             />
             <ContainerMovieList className={showList ? "visible" : ""}>
-              {result?.map((r) => (
-                <p key={r.id} onClick={() => selectMovie(r)}>
-                  {r.title}
-                </p>
-              ))}
+              {result === undefined ? (
+                <p>loading</p>
+              ) : (
+                result?.map((r) => (
+                  <p key={r.id} onClick={() => selectMovie(r)}>
+                    {r.title}
+                  </p>
+                ))
+              )}
             </ContainerMovieList>
           </ContainerMovieName>
           <RatingLabel>
@@ -171,7 +176,7 @@ const ContainerReview = styled.div`
   border-radius: 8px;
   width: 40vw;
   padding: 20px;
-  margin-top: 70px;
+  margin-top: 80px;
   margin-bottom: 20px;
   @media (max-width: 1000px) {
     margin-top: 150px;
@@ -192,6 +197,7 @@ const ContainerPoster = styled.div`
     width: 101%;
     height: 101%;
     border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 1) 0 5px 10px;
   }
   svg {
     color: rgba(0, 0, 0, 0.3);
@@ -235,7 +241,7 @@ const ContainerMovieList = styled.div`
     }
   }
   max-height: 0;
-  transition: max-height 0.5s ease;
+  transition: max-height 0s ease;
 
   &.visible {
     max-height: 30vh;

@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import useSignIn from "../../hooks/api/useSignIn";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Logo } from "../../components/Logo";
 import { Button, ContainerForm, Form, Input, LinkTo } from "./style";
 import UserContext from "../../contexts/AuthContext";
@@ -8,9 +8,9 @@ import UserContext from "../../contexts/AuthContext";
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [disable, setDisable] = useState(false);
+  const [disable] = useState(false);
 
-  const { signInLoading, signIn } = useSignIn();
+  const { signIn } = useSignIn();
   const { setUserData } = useContext(UserContext);
 
   const navigate = useNavigate();

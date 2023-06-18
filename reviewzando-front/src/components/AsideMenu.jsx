@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import useGetUsers from "../hooks/api/useGetUsers";
 import { useNavigate } from "react-router-dom";
@@ -63,7 +63,7 @@ export default function AsideMenu() {
                 <p>{u.username}</p>
               </div>
               <button disabled={disable} onClick={() => handleUnfollow(u.id)}>
-                deixar de seguir
+                remover
               </button>
             </Followed>
           ) : (

@@ -47,8 +47,17 @@ export const Button = styled.button`
   height: 65px;
   color: #ffffff;
   background-color: #c81300;
-  border: 0;
+  border: 0px;
   border-radius: 10px;
+  :hover {
+    background-color: #eb1700;
+    transform: translateY(-2px);
+  }
+  :active {
+    box-shadow: none;
+    transform: translateY(0);
+    background-color: #c81300;
+  }
 `;
 
 export const LinkTo = styled(Link)`

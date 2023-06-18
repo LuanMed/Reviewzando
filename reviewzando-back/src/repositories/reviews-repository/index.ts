@@ -1,8 +1,31 @@
 import { prisma } from '@/config';
 import { Prisma, Review } from '@prisma/client';
 
-async function getReviews(): Promise<Review[]> {
+async function getReviews(id: number): Promise<Review[]> {
+  const follows = await prisma.follow.findMany({
+    where: {
+      followerId: id,
+    },
+    select: {
+      followingId: true,
+    },
+  });
+
+  const followingIds = follows.map((follow) => follow.followingId);
+
   return prisma.review.findMany({
+    where: {
+    OR: [
+      {
+        userId: {
+          in: followingIds,
+        },
+      },
+      {
+        userId: id,
+      },
+    ],
+  },
     include: {
       User: {
         select: {

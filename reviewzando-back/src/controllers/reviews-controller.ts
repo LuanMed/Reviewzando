@@ -5,8 +5,9 @@ import { NextFunction, Response } from 'express';
 import httpStatus from 'http-status';
 
 export async function getReviews(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response> {
+  const { userId } = req;
   try {
-    const reviews = await reviewService.getReviews();
+    const reviews = await reviewService.getReviews(userId);
     return res.status(httpStatus.OK).send(reviews);
   } catch (e) {
     next(e);
