@@ -26,3 +26,12 @@ export async function createReview(body, token) {
   });
   return response.data;
 }
+
+export async function deleteReview(id, token) {
+  const response = await api.delete(`/reviews/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+}

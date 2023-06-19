@@ -9,6 +9,8 @@ import UserContext from "../contexts/AuthContext";
 import useGetFollowsById from "../hooks/api/useGetFollowsById";
 import usePostFollow from "../hooks/api/usePostFollow";
 import useDeleteFollow from "../hooks/api/useDeleteFollow";
+import { BsFillTrash3Fill } from "react-icons/bs";
+import useDeleteReview from "../hooks/api/useDeleteReview";
 
 export default function UserFeed() {
   const { id } = useParams();
@@ -22,6 +24,7 @@ export default function UserFeed() {
   const { postFollows } = usePostFollow();
   const { deleteFollows } = useDeleteFollow();
   const { userData: user } = useContext(UserContext);
+  const { deleteReview } = useDeleteReview();
 
   useEffect(() => {
     async function fetchData() {
@@ -59,6 +62,16 @@ export default function UserFeed() {
       setDisable(false);
     } catch (error) {
       setDisable(false);
+      console.log(error);
+    }
+  }
+
+  async function handleDeleteReview(reviewId) {
+    try {
+      await deleteReview(reviewId);
+      const resultSearch = await getReviewByIdAct(id);
+      setReviewsList(resultSearch);
+    } catch (error) {
       console.log(error);
     }
   }
@@ -132,6 +145,13 @@ export default function UserFeed() {
                     </PosterAndScore>
 
                     <Desciption>{r.description}</Desciption>
+                    {user.user.id == id ? (
+                      <BsFillTrash3Fill
+                        onClick={() => handleDeleteReview(r.id)}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </ContainerReview>
                 ))
               ) : (
@@ -224,6 +244,12 @@ const ContainerReview = styled.div`
   margin-bottom: 28px;
   margin-right: 17vw;
   padding: 10px;
+  svg {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
   @media (max-width: 900px) {
     width: 80vw;
     margin-right: 0;
@@ -301,12 +327,9 @@ const PostOwner = styled.div`
 `;
 
 const Desciption = styled.div`
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
   text-overflow: ellipsis;
   line-height: 18px;
+  width: 95%;
 `;
 
 const RatingLabel = styled.label`

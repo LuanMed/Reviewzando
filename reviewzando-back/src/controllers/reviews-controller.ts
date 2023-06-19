@@ -36,3 +36,14 @@ export async function createReview(req: AuthenticatedRequest, res: Response, nex
     next(e);
   }
 }
+
+export async function deleteReview(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response> {
+  const id = Number(req.params.id);
+  try {
+    await reviewService.deleteReview(id);
+
+    return res.sendStatus(httpStatus.ACCEPTED);
+  } catch (e) {
+    next(e);
+  }
+}

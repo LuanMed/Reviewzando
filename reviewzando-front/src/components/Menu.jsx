@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { useContext } from "react";
 import UserContext from "../contexts/AuthContext";
 import { AiOutlinePlus } from "react-icons/ai";
-import getMoviesFromTmbdApi from "../services/tmdbApi";
 
 export default function Menu() {
   const [showLogout, setShowLogout] = useState(false);
@@ -30,7 +29,7 @@ export default function Menu() {
       </ContainerImage>
       <LogOutBar data-test="menu" showLogout={showLogout}>
         <Link to={"/home"}>Início</Link>
-        <Link>
+        <Link to={`/user/${user.id}`}>
           Suas
           <br />
           análises

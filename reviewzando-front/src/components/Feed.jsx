@@ -4,15 +4,31 @@ import { useEffect } from "react";
 import { useState } from "react";
 import useGetReview from "../hooks/api/useGetReviews";
 import { useNavigate } from "react-router-dom";
+import { BsFillTrash3Fill } from "react-icons/bs";
+import { useContext } from "react";
+import UserContext from "../contexts/AuthContext";
+import useDeleteReview from "../hooks/api/useDeleteReview";
 
 export default function Feed() {
   const [reviewsList, setReviewsList] = useState([]);
-  const { getReview } = useGetReview();
+  const { getReview, getReviewAct } = useGetReview();
+  const { userData: user } = useContext(UserContext);
+  const { deleteReview } = useDeleteReview();
   const navigate = useNavigate();
 
   useEffect(() => {
     setReviewsList(getReview);
   }, [getReview]);
+
+  async function handleDeleteReview(id) {
+    try {
+      await deleteReview(id);
+      const reviews = await getReviewAct();
+      setReviewsList(reviews);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -60,6 +76,11 @@ export default function Feed() {
                 </PosterAndScore>
 
                 <Desciption>{r.description}</Desciption>
+                {r.userId == user.user.id ? (
+                  <BsFillTrash3Fill onClick={() => handleDeleteReview(r.id)} />
+                ) : (
+                  <></>
+                )}
               </ContainerReview>
             ))
           ) : (
@@ -99,6 +120,12 @@ const ContainerReview = styled.div`
   margin-bottom: 28px;
   margin-right: 17vw;
   padding: 10px;
+  svg {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
   @media (max-width: 900px) {
     width: 80vw;
     margin-right: 0;
@@ -184,6 +211,7 @@ const Desciption = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 18px;
+  width: 95%;
 `;
 
 const RatingLabel = styled.label`

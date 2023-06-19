@@ -15,17 +15,17 @@ async function getReviews(id: number): Promise<Review[]> {
 
   return prisma.review.findMany({
     where: {
-    OR: [
-      {
-        userId: {
-          in: followingIds,
+      OR: [
+        {
+          userId: {
+            in: followingIds,
+          },
         },
-      },
-      {
-        userId: id,
-      },
-    ],
-  },
+        {
+          userId: id,
+        },
+      ],
+    },
     include: {
       User: {
         select: {
@@ -65,10 +65,19 @@ async function createReview(data: Prisma.ReviewUncheckedCreateInput): Promise<Re
   });
 }
 
+async function deleteReview(id: number): Promise<void> {
+  await prisma.review.delete({
+    where: {
+      id,
+    },
+  });
+}
+
 const reviewRepository = {
   getReviews,
   getReviewsById,
   createReview,
+  deleteReview,
 };
 
 export default reviewRepository;

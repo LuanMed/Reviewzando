@@ -22,15 +22,25 @@ const ContainerButton = styled.div`
   margin-top: 50px;
   button {
     width: 150px;
+
     font-family: "Oswald";
     font-style: normal;
     font-weight: 700;
     font-size: 20px;
-    height: 60px;
+    height: 65px;
     color: #ffffff;
     background-color: #c81300;
-    border: 0;
+    border: 0px;
     border-radius: 10px;
+    :hover {
+      background-color: #eb1700;
+      transform: translateY(-2px);
+    }
+    :active {
+      box-shadow: none;
+      transform: translateY(0);
+      background-color: #c81300;
+    }
   }
 
   @media (max-width: 800px) {

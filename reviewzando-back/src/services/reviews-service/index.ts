@@ -33,10 +33,15 @@ async function createReview(body: ReviewWithoutAverage): Promise<Review> {
   });
 }
 
+async function deleteReview(id: number): Promise<void> {
+  await reviewRepository.deleteReview(id);
+}
+
 const reviewService = {
   getReviews,
   getReviewsById,
   createReview,
+  deleteReview,
 };
 
 export default reviewService;
