@@ -23,7 +23,7 @@ export function init(): Promise<Express> {
   return Promise.resolve(app);
 }
 
-export async function clore(): Promise<void> {
+export async function close(): Promise<void> {
   await disconnetDb();
 }
 

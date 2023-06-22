@@ -22,11 +22,12 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
 }
 
 async function getUser(email: string): Promise<GetUserOrFailResult> {
-    const user = await usersRepository.findByEmail(email);
-    if(!user) throw invalidCredentialsError();
+  const user = await usersRepository.findByEmail(email);
 
-    return user;
-};
+  if (!user) throw invalidCredentialsError();
+
+  return user;
+}
 
 async function validatePassword(password: string, userPassword: string) {
   const isPasswordValid = await bcrypt.compare(password, userPassword);
@@ -46,15 +47,15 @@ async function createSession(userId: number) {
 export type SignInParams = Pick<User, 'email' | 'password'>;
 
 type SignInResult = {
-    user: Pick<User, 'id' | 'username' |'email'>;
-    token: string;
-  };
-  
-  type GetUserOrFailResult = Pick<User, 'id' | 'username' | 'email' | 'password'>;
-  
-  const sessionsService = {
-    signIn,
-  };
-  
-  export default sessionsService;
-  export * from './errors';
+  user: Pick<User, 'id' | 'username' | 'email'>;
+  token: string;
+};
+
+type GetUserOrFailResult = Pick<User, 'id' | 'username' | 'email' | 'password'>;
+
+const sessionsService = {
+  signIn,
+};
+
+export default sessionsService;
+export * from './errors';

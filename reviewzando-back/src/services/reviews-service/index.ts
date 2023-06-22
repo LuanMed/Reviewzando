@@ -5,6 +5,7 @@ import { Review } from '@prisma/client';
 
 async function getReviews(id: number): Promise<Review[]> {
   const reviews: Review[] = await reviewRepository.getReviews(id);
+
   if (!reviews) throw notFoundError();
 
   return reviews;
