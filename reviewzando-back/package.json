@@ -2,9 +2,11 @@
   "name": "reviewzando-back",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "dotenv -e .env.test jest --passWithNoTests --runInBand --noStackTrace",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "npm run dev:migration:run && node dist/server.js",
+    "test": "dotenv -e .env.test prisma migrate dev && dotenv -e .env.test jest --passWithNoTests --noStackTrace --runInBand",
     "test:coverage": "dotenv -e .env.test jest --passWithNoTests --runInBand --coverage --collectCoverageFrom='./src/**'",
     "test:load-envs": "dotenv -e .env.test",
     "test:migration:run": "npm run test:load-envs prisma migrate deploy",
