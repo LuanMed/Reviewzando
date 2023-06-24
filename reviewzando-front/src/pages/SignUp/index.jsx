@@ -2,6 +2,7 @@ import { useState } from "react";
 import useSignUp from "../../hooks/api/useSignUp";
 import { Button, ContainerForm, Form, Input, LinkTo } from "./style";
 import { Logo } from "../../components/Logo";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -10,7 +11,7 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [picture_url, setPicture_url] = useState("");
   const [disable] = useState(false);
-
+  const navigate = useNavigate();
   const { signUpLoading, signUp } = useSignUp();
 
   async function submit(event) {
@@ -21,7 +22,7 @@ export default function SignUp() {
     } else {
       try {
         await signUp(username, email, password, picture_url);
-        window.location.href = "/signin";
+        navigate("/signin");
       } catch (error) {
         console.log(error.response.data);
         if (

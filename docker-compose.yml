@@ -1,5 +1,5 @@
 services:
-  db:
+  postgres:
     image: postgres
     container_name: postgres
     restart: always
@@ -8,16 +8,36 @@ services:
     volumes:
       - postgres-volume:/var/lib/postgresql/data
     env_file:
-      - reviewzando-back/.env
-  node_app:
-    container_name: node_app
+      - reviewzando-back/.env.development
+
+  node:
+    container_name: node
     build: ./reviewzando-back
     ports:
-      - 1234:5000
+      - 5000:5000
     env_file:
-      - reviewzando-back/.env
+      - reviewzando-back/.env.development
     depends_on:
-      - db
+      - postgres
+
+  react:
+    container_name: react
+    build: ./reviewzando-front
+    volumes:
+      - react-volume:/var/www/html
+
+  nginx:
+    container_name: nginx_app
+    build: ./nginx
+    ports:
+      - 8080:80
+    volumes:
+      - react-volume:/var/www/html
+    depends_on:
+      - postgres
+      - node
+      - react
 
 volumes:
   postgres-volume:
+  react-volume:

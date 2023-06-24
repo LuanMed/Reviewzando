@@ -1,6 +1,6 @@
 FROM node
 
-WORKDIR /src/usr/
+WORKDIR /usr/src/
 
 COPY . .
 
