@@ -6,7 +6,7 @@ services:
     ports:
       - 5433:5432
     env_file:
-      - reviewzando-back/.env.test
+      - ./reviewzando-back/.env.test
 
   node:
     container_name: node
@@ -14,6 +14,6 @@ services:
     ports:
       - 5000:5000
     env_file:
-      - reviewzando-back/.env.test
+      - ./reviewzando-back/.env.test
     depends_on:
       - postgres
