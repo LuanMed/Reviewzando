@@ -11,7 +11,7 @@ jobs:
         with:
           envkey_PORT: 5000
           envkey_POSTGRES_USER: "postgres"
-          envkey_POSTGRES_PASSWORD: "secret"
+          envkey_POSTGRES_PASSWORD: "postgres"
           envkey_POSTGRES_DB: "reviewzando_test"
           envkey_DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/reviewzando_test"
           directory: reviewzando-back
