@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    ports:
+      - 5433:5432
+    env_file:
+      - reviewzando-back/.env.test
+
+  node:
+    container_name: node
+    build: ./reviewzando-back
+    ports:
+      - 5000:5000
+    env_file:
+      - reviewzando-back/.env.test
+    depends_on:
+      - postgres
