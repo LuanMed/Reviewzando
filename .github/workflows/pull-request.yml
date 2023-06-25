@@ -14,6 +14,7 @@ jobs:
           envkey_POSTGRES_PASSWORD: "secret"
           envkey_POSTGRES_DB: "reviewzando"
           envkey_DATABASE_URL: "postgresql://postgres:secret@postgres:5432/reviewzando"
+          envkey_JWT_SECRET: "top_secret_dev"
           directory: reviewzando-back
           file_name: .env.test
       - name: Run tests
