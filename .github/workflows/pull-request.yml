@@ -13,7 +13,7 @@ jobs:
           envkey_POSTGRES_USER: "postgres"
           envkey_POSTGRES_PASSWORD: "secret"
           envkey_POSTGRES_DB: "reviewzando_test"
-          envkey_DATABASE_URL: "postgresql://postgres:postgres@secret:5432/reviewzando_test"
+          envkey_DATABASE_URL: "postgresql://postgres:secret@postgres:5432/reviewzando_test"
           directory: reviewzando-back
           file_name: .env.test
       - name: Run tests
