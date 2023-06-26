@@ -86,7 +86,7 @@ export default function CreateReview() {
             />
             <ContainerMovieList className={showList ? "visible" : ""}>
               {result === undefined ? (
-                <p>loading</p>
+                <p>Carregando...</p>
               ) : (
                 result?.map((r) => (
                   <p key={r.id} onClick={() => selectMovie(r)}>
