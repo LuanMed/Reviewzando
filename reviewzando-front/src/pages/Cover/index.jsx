@@ -29,7 +29,7 @@ const ContainerButton = styled.div`
     font-size: 20px;
     height: 65px;
     color: #ffffff;
-    background-color: blue;
+    background-color: #c81300;
     border: 0px;
     border-radius: 10px;
     :hover {
