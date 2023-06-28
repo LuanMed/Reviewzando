@@ -29,10 +29,7 @@ export default function SignUp() {
           alert("Esse email já existe.");
         } else if (error.response.data.name === "DuplicatedUsernameError") {
           alert("Esse apelido já foi usado.");
-        } else if (
-          error.response.data.details[0] ===
-          '"picture_url" must be a valid uri with a scheme matching the http|https pattern'
-        ) {
+        } else if (error.response.data.details[0].startsWith('"picture_url"')) {
           alert(
             "Link da imagem inválido! \nTente utilizar um link que \ntermine em .png ou .jpg"
           );
