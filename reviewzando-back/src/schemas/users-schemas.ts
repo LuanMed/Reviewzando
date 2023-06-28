@@ -5,5 +5,8 @@ export const createUserSchema = Joi.object<CreateUserParams>({
   username: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(3).required(),
-  picture_url: Joi.string().uri().required(),
+  picture_url: Joi.string()
+    .uri({ scheme: ['http', 'https'] })
+    .regex(/\.(jpg|jpeg|png|gif|bmp)$/i)
+    .required(),
 });
